@@ -1,4 +1,4 @@
-# fstk [![Build Status](https://secure.travis-ci.org/ben/fstk.png?branch=master)](http://travis-ci.org/ben/fstk)
+# fstk [![Build Status](https://secure.travis-ci.org/sackio/fstk.png?branch=master)](http://travis-ci.org/sackio/fstk)
 
 fstk is a [Node.js](http://nodejs.org) module for extending Node's FS module with various utility methods, without relying on child processes (i.e. bash).
 
