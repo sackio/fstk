@@ -709,6 +709,32 @@ exports['fstk'] = {
         test.ok(!_.any(globals.stat.files));
         return cb();
       }
+    , function(cb){
+        var files = [];
+        for (var i = 0; i < 2000; i++){
+          var path = FSTK.tempfile();
+          test.ok(path);
+          test.ok(!_.some(files, function(f){ return f === path; }));
+          files.push(path);
+        }
+        return cb();
+      }
+    , function(cb){
+        return FSTK.getURL('http://nytimes.com', Belt.cs(cb, globals, 'path', 1, 0));
+      }
+    , function(cb){
+        globals.file = FS.readFileSync(globals.path).toString();
+        test.ok(globals.file.match(/<\/html>/));
+        test.ok(globals.file.match(/<html/));
+        return cb();
+      }
+    , function(cb){
+        return FSTK.getURL('http://i.imgur.com/IBPVml1.jpg', Belt.cs(cb, globals, 'path', 1, 0));
+      }
+    , function(cb){
+        test.ok(FS.existsSync(globals.path));
+        return cb();
+      }
     ], function(err){
       if (err) console.error(err);
       test.ok(!err);

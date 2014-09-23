@@ -12,6 +12,7 @@ var fstk = require('fstk');
 ## Methods
 All methods accept optional options object and callback as last two arguments (order doesn't matter). If options are not supplied, defaults are used. If callback is not supplied, noop is used.
 
+* **tempfile()** - Returns a unique temporary file path, using the system's default temp directory
 * **filename(path)** - Returns ``path``'s base filename with extension removed
 * **replaceExt(path, extension)** - Replace ``path``'s current extension (if any) with ``extension``
 * **fileType(path)** - Returns an intelligent guess of ``path``'s type based on extension (right now either ``video``, ``audio``, or ``image``). Mime type list is located in ``./resources/mimes.json``
@@ -38,7 +39,9 @@ All methods accept optional options object and callback as last two arguments (o
     * **get(callback)** - Passes latest file data to ``callback``. If a disk read is in progress, callback is blocked until read is completed
     * **set(data, callback)** - Sets file data to ``data`` and persists to disk, calling ``callback`` when complete
     * **pset(pStr, value, callback)** - Sets a deep property (``pStr``) of file data to ``value`` and persists all data to disk, calling ``callback`` when complete
-* **watchJSON(path, options, callback)** - Uses ``watchFile`` with JSON serializers and deserializers to keep a JSON file actively updated in memory as an ``object``.
+* **watchJSON(path, options, callback)** - Uses ``watchFile`` with JSON serializers and deserializers to keep a JSON file actively updated in memory as an ``object``
+* **getURL(url, options, callback)** - Saves contents of `url` to a temporary file. Pass `options.dest_path` to specify a destination path. `callback` is passed an `error` and `path` for the newly created file
+* **postPath(path, url, options, callback)** - Post the contents of `path` to `url`. Pass `options.method` as `post` or `put` to change request type. Pass `options.form_field` to specify a form field to post file contents to. Pass `options.form_data` to include other form data in the request.
 
 ## License
 Copyright (c) 2014 Ben Sack
