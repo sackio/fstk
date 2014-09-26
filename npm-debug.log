@@ -1,0 +1,117 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'publish' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.32
+4 verbose node symlink /usr/bin/node
+5 verbose publish [ '.' ]
+6 verbose cache add [ '.', null ]
+7 verbose cache add name=undefined spec="." args=[".",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: '.',
+8 verbose parsed url   path: '.',
+8 verbose parsed url   href: '.' }
+9 silly lockFile 3a52ce78- .
+10 verbose lock . /home/ben/.npm/3a52ce78-.lock
+11 verbose tar pack [ '/home/ben/.npm/fstk/0.1.7/package.tgz', '.' ]
+12 verbose tarball /home/ben/.npm/fstk/0.1.7/package.tgz
+13 verbose folder .
+14 info prepublish fstk@0.1.7
+15 silly lockFile 1f1177db-tar tar://.
+16 verbose lock tar://. /home/ben/.npm/1f1177db-tar.lock
+17 silly lockFile accd94cd-e-ben-npm-fstk-0-1-7-package-tgz tar:///home/ben/.npm/fstk/0.1.7/package.tgz
+18 verbose lock tar:///home/ben/.npm/fstk/0.1.7/package.tgz /home/ben/.npm/accd94cd-e-ben-npm-fstk-0-1-7-package-tgz.lock
+19 silly lockFile 1f1177db-tar tar://.
+20 silly lockFile 1f1177db-tar tar://.
+21 silly lockFile accd94cd-e-ben-npm-fstk-0-1-7-package-tgz tar:///home/ben/.npm/fstk/0.1.7/package.tgz
+22 silly lockFile accd94cd-e-ben-npm-fstk-0-1-7-package-tgz tar:///home/ben/.npm/fstk/0.1.7/package.tgz
+23 silly lockFile 51b1c7f9-home-ben-npm-fstk-0-1-7-package /home/ben/.npm/fstk/0.1.7/package
+24 verbose lock /home/ben/.npm/fstk/0.1.7/package /home/ben/.npm/51b1c7f9-home-ben-npm-fstk-0-1-7-package.lock
+25 silly lockFile 51b1c7f9-home-ben-npm-fstk-0-1-7-package /home/ben/.npm/fstk/0.1.7/package
+26 silly lockFile 51b1c7f9-home-ben-npm-fstk-0-1-7-package /home/ben/.npm/fstk/0.1.7/package
+27 silly lockFile 3a52ce78- .
+28 silly lockFile 3a52ce78- .
+29 silly publish { name: 'fstk',
+29 silly publish   description: 'Additions to Node\'s FS module, a toolkit for filesystem usage',
+29 silly publish   version: '0.1.7',
+29 silly publish   homepage: 'https://github.com/sackio/fstk',
+29 silly publish   author: { name: 'Ben Sack', email: 'ben@sack.io' },
+29 silly publish   repository: { type: 'git', url: 'git://github.com/sackio/fstk.git' },
+29 silly publish   bugs: { url: 'https://github.com/sackio/fstk/issues' },
+29 silly publish   licenses:
+29 silly publish    [ { type: 'MIT',
+29 silly publish        url: 'https://github.com/sackio/fstk/blob/master/LICENSE-MIT' } ],
+29 silly publish   main: 'lib/fstk',
+29 silly publish   engines: { node: '>= 0.10.0' },
+29 silly publish   scripts: { test: 'grunt nodeunit' },
+29 silly publish   devDependencies:
+29 silly publish    { 'grunt-contrib-jshint': '~0.6.4',
+29 silly publish      'grunt-contrib-nodeunit': '~0.2.0',
+29 silly publish      'grunt-contrib-watch': '~0.5.3',
+29 silly publish      grunt: '~0.4.5' },
+29 silly publish   dependencies:
+29 silly publish    { underscore: '*',
+29 silly publish      async: '*',
+29 silly publish      jsbelt: '*',
+29 silly publish      mime: '*',
+29 silly publish      request: '*' },
+29 silly publish   keywords: [],
+29 silly publish   readme: '# fstk [![Build Status](https://secure.travis-ci.org/sackio/fstk.png)](http://travis-ci.org/sackio/fstk)\n\nfstk is a [Node.js](http://nodejs.org) module for extending Node\'s FS module with various utility methods, without relying on child processes (i.e. bash).\n\n## Getting Started\nInstall the module with: `npm install fstk`\n\n```javascript\nvar fstk = require(\'fstk\');\n```\n\n## Methods\nAll methods accept optional options object and callback as last two arguments (order doesn\'t matter). If options are not supplied, defaults are used. If callback is not supplied, noop is used.\n\n* **tempfile()** - Returns a unique temporary file path, using the system\'s default temp directory\n* **filename(path)** - Returns ``path``\'s base filename with extension removed\n* **replaceExt(path, extension)** - Replace ``path``\'s current extension (if any) with ``extension``\n* **fileType(path)** - Returns an intelligent guess of ``path``\'s type based on extension (right now either ``video``, ``audio``, or ``image``). Mime type list is located in ``./resources/mimes.json``\n* **subPaths(path)** - Returns all intermediate paths (parent directories) to ``path``\n* **stat(path, options, callback)** - Performs a more comprehensive stat on ``path``. Includes automatic evaluation of Node\'s isFile, isDirectory, ... methods. Includes automatic mime lookup, path normalization, and check for symbolic link. Pass ``options.fast_stat`` to skip these enhancements.\n* **exists(path, callback)** - Checks for ``path``\'s existence and passes ``true`` or ``false`` to callback\n* **transformDir(path, transformer, options, callback)** - Reads contents of directory at ``path``, performing ``transformer`` on all file paths found. ``transformer`` is passed a path and a callback to include an error (if it occurs) as first element and and transformed path as second argument. Uses ``async.mapSeries``.\n* **statDir(path, callback)** - Perform ``stat`` on ``path`` and it\'s top-level contents, passing an error (if applicable) and an object to ``callback`` containing ``path``\'s stat and ``path.files`` with an array of stat objects for contents.\n* **dirTree(path, callback)** - Recursively read and stat ``path`` and its subdirectories, passing to ``callback`` an error (if applicable) and an object representing a tree-like structure of ``path``\'s deep contents.\n* **dirPart(path, callback)** - Partitions the deep contents of ``path`` into arrays of ``directories`` and ``files``. Passes to ``callback`` an error (if applicable) and the flattened arrays of ``path``\'s contents (regardless of specific sub-level).\n* **flattenDir(path, callback)** - Flattens the structure of ``path``, moving all files to the top level and deleting the now empty subdirectories. Name collisions will cause deeper paths to be overwritten with shallower paths with the same filename.\n* **emptyDir(path, callback)** - Deletes files on all levels of ``path``, leaving the now empty subdirectories in their original structure.\n* **writeFile(path, body, options, callback)** - Identical to Node\'s ``fs.writeFile`` but also creates any parent directories that do not exist, similar to bash\'s ``mkdir -p``\n* **transformFile(path, transformer, options, callback)** - Reads in ``path``\'s data, passes it to ``transformer``, which passes an error (if it occurs) and the transformed contents of ``path`` which are then used to overwrite ``path``. Pass ``options.destination`` to write the transformed data somewhere other than ``path``\n* **writeGzipFile(path, body, options, callback)** - Compress ``data`` (gzip) and write the compressed version to ``path``, include ``options.encoding`` to use encoding other than ``utf8``\n* **readGzipFile(path, options, callback)** - Read a compressed file at ``path``, decompressing it, and passing the resulting buffer to ``callback`` with an error (if it occured)\n* **writeJSON(path, obj, callback)** - Stringify ``obj`` and write it to ``path``\n* **readJSON(path, callback)** - Parse the contents of ``path`` and pass results to ``callback`` as an ``object``\n* **mkdir(path, callback)** - Similar to bash\'s ``mkdir -p``, makes any missing parent paths for ``path`` before making ``path``\n* **rmdir(path, callback)** - Similar to bash\'s ``rm -rf path``, removes empty and non-empty directories, while also deleting any of their contents\n* **rm(path, callback)** - Similar to bash\'s ``rm -rf``, removes ``path`` even if it is a directory (empty or non-empty)\n* **watchFile(path, options, callback)** - Poor man\'s database -- watches a file, loading its updated contents into memory when changes occur and persisting changes to the loaded version to disk. Passing ``options.serializer(data, cb)`` and ``options.deserializer(data, cb)`` provides asynchronous methods used to serialize data (when persisting to disk) and deserialize data (when loading from disk). ``callback`` is passed an ``object`` to ``callback`` with the following methods and properties:\n    * **watcher** - Underlying ``FS.fileWatcher`` instance\n    * **get(callback)** - Passes latest file data to ``callback``. If a disk read is in progress, callback is blocked until read is completed\n    * **set(data, callback)** - Sets file data to ``data`` and persists to disk, calling ``callback`` when complete\n    * **pset(pStr, value, callback)** - Sets a deep property (``pStr``) of file data to ``value`` and persists all data to disk, calling ``callback`` when complete\n* **watchJSON(path, options, callback)** - Uses ``watchFile`` with JSON serializers and deserializers to keep a JSON file actively updated in memory as an ``object``\n* **getURL(url, options, callback)** - Saves contents of `url` to a temporary file. Pass `options.dest_path` to specify a destination path. `callback` is passed an `error` and `path` for the newly created file\n* **postPath(path, url, options, callback)** - Post the contents of `path` to `url`. Pass `options.method` as `post` or `put` to change request type. Pass `options.form_field` to specify a form field to post file contents to. Pass `options.form_data` to include other form data in the request.\n\n## License\nCopyright (c) 2014 Ben Sack\nLicensed under the MIT license.\n',
+29 silly publish   readmeFilename: 'README.md',
+29 silly publish   gitHead: '96b057597461a78cb4b56e39ae9664ba8d433439',
+29 silly publish   _id: 'fstk@0.1.7',
+29 silly publish   _shasum: '330f225a0eb890351ebd9a419c9043345b205cc0',
+29 silly publish   _from: '.' }
+30 verbose request where is /fstk
+31 verbose request registry https://registry.npmjs.org/
+32 verbose request id b042d1ac84602a84
+33 verbose url raw /fstk
+34 verbose url resolving [ 'https://registry.npmjs.org/', './fstk' ]
+35 verbose url resolved https://registry.npmjs.org/fstk
+36 verbose request where is https://registry.npmjs.org/fstk
+37 info trying registry request attempt 1 at 15:28:06
+38 http PUT https://registry.npmjs.org/fstk
+39 http 403 https://registry.npmjs.org/fstk
+40 verbose headers { date: 'Fri, 26 Sep 2014 19:28:07 GMT',
+40 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+40 verbose headers   'content-type': 'application/json',
+40 verbose headers   'cache-control': 'max-age=60',
+40 verbose headers   'content-length': '9156',
+40 verbose headers   'accept-ranges': 'bytes',
+40 verbose headers   via: '1.1 varnish',
+40 verbose headers   'x-served-by': 'cache-iad2129-IAD',
+40 verbose headers   'x-cache': 'MISS',
+40 verbose headers   'x-cache-hits': '0',
+40 verbose headers   'x-timer': 'S1411759687.010681,VS0,VE172',
+40 verbose headers   'keep-alive': 'timeout=10, max=50',
+40 verbose headers   connection: 'Keep-Alive' }
+41 error publish Failed PUT 403
+42 error Error: forbidden cannot modify pre-existing version: 0.1.7
+42 error old={"name":"fstk","description":"Additions to Node's FS module, a toolkit for filesystem usage","version":"0.1.7","homepage":"https://github.com/sackio/fstk","author":{"name":"Ben Sack","email":"ben@sack.io"},"repository":{"type":"git","url":"git://github.com/sackio/fstk.git"},"bugs":{"url":"https://github.com/sackio/fstk/issues"},"licenses":[{"type":"MIT","url":"https://github.com/sackio/fstk/blob/master/LICENSE-MIT"}],"main":"lib/fstk","engines":{"node":">= 0.10.0"},"scripts":{"test":"grunt nodeunit"},"devDependencies":{"grunt-contrib-jshint":"~0.6.4","grunt-contrib-nodeunit":"~0.2.0","grunt-contrib-watch":"~0.5.3","grunt":"~0.4.5"},"dependencies":{"underscore":"*","async":"*","jsbelt":"*","mime":"*","request":"*"},"keywords":[],"gitHead":"96b057597461a78cb4b56e39ae9664ba8d433439","_id":"fstk@0.1.7","_shasum":"330f225a0eb890351ebd9a419c9043345b205cc0","_from":".","_npmVersion":"1.4.28","_npmUser":{"name":"sackio","email":"ben@sack.io"},"maintainers":[{"name":"sackio","email":"ben@sack.io"}],"dist":{"shasum":"330f225a0eb890351ebd9a419c9043345b205cc0","tarball":"http://registry.npmjs.org/fstk/-/fstk-0.1.7.tgz"}}
+42 error new={"name":"fstk","description":"Additions to Node's FS module, a toolkit for filesystem usage","version":"0.1.7","homepage":"https://github.com/sackio/fstk","author":{"name":"Ben Sack","email":"ben@sack.io"},"repository":{"type":"git","url":"git://github.com/sackio/fstk.git"},"bugs":{"url":"https://github.com/sackio/fstk/issues"},"licenses":[{"type":"MIT","url":"https://github.com/sackio/fstk/blob/master/LICENSE-MIT"}],"main":"lib/fstk","engines":{"node":">= 0.10.0"},"scripts":{"test":"grunt nodeunit"},"devDependencies":{"grunt-contrib-jshint":"~0.6.4","grunt-contrib-nodeunit":"~0.2.0","grunt-contrib-watch":"~0.5.3","grunt":"~0.4.5"},"dependencies":{"underscore":"*","async":"*","jsbelt":"*","mime":"*","request":"*"},"keywords":[],"readme":"# fstk [![Build Status](https://secure.travis-ci.org/sackio/fstk.png)](http://travis-ci.org/sackio/fstk)\u000a\u000afstk is a [Node.js](http://nodejs.org) module for extending Node's FS module with various utility methods, without relying on child processes (i.e. bash).\u000a\u000a## Getting Started\u000aInstall the module with: `npm install fstk`\u000a\u000a```javascript\u000avar fstk = require('fstk');\u000a```\u000a\u000a## Methods\u000aAll methods accept optional options object and callback as last two arguments (order doesn't matter). If options are not supplied, defaults are used. If callback is not supplied, noop is used.\u000a\u000a* **tempfile()** - Returns a unique temporary file path, using the system's default temp directory\u000a* **filename(path)** - Returns ``path``'s base filename with extension removed\u000a* **replaceExt(path, extension)** - Replace ``path``'s current extension (if any) with ``extension``\u000a* **fileType(path)** - Returns an intelligent guess of ``path``'s type based on extension (right now either ``video``, ``audio``, or ``image``). Mime type list is located in ``./resources/mimes.json``\u000a* **subPaths(path)** - Returns all intermediate paths (parent directories) to ``path``\u000a* **stat(path, options, callback)** - Performs a more comprehensive stat on ``path``. Includes automatic evaluation of Node's isFile, isDirectory, ... methods. Includes automatic mime lookup, path normalization, and check for symbolic link. Pass ``options.fast_stat`` to skip these enhancements.\u000a* **exists(path, callback)** - Checks for ``path``'s existence and passes ``true`` or ``false`` to callback\u000a* **transformDir(path, transformer, options, callback)** - Reads contents of directory at ``path``, performing ``transformer`` on all file paths found. ``transformer`` is passed a path and a callback to include an error (if it occurs) as first element and and transformed path as second argument. Uses ``async.mapSeries``.\u000a* **statDir(path, callback)** - Perform ``stat`` on ``path`` and it's top-level contents, passing an error (if applicable) and an object to ``callback`` containing ``path``'s stat and ``path.files`` with an array of stat objects for contents.\u000a* **dirTree(path, callback)** - Recursively read and stat ``path`` and its subdirectories, passing to ``callback`` an error (if applicable) and an object representing a tree-like structure of ``path``'s deep contents.\u000a* **dirPart(path, callback)** - Partitions the deep contents of ``path`` into arrays of ``directories`` and ``files``. Passes to ``callback`` an error (if applicable) and the flattened arrays of ``path``'s contents (regardless of specific sub-level).\u000a* **flattenDir(path, callback)** - Flattens the structure of ``path``, moving all files to the top level and deleting the now empty subdirectories. Name collisions will cause deeper paths to be overwritten with shallower paths with the same filename.\u000a* **emptyDir(path, callback)** - Deletes files on all levels of ``path``, leaving the now empty subdirectories in their original structure.\u000a* **writeFile(path, body, options, callback)** - Identical to Node's ``fs.writeFile`` but also creates any parent directories that do not exist, similar to bash's ``mkdir -p``\u000a* **transformFile(path, transformer, options, callback)** - Reads in ``path``'s data, passes it to ``transformer``, which passes an error (if it occurs) and the transformed contents of ``path`` which are then used to overwrite ``path``. Pass ``options.destination`` to write the transformed data somewhere other than ``path``\u000a* **writeGzipFile(path, body, options, callback)** - Compress ``data`` (gzip) and write the compressed version to ``path``, include ``options.encoding`` to use encoding other than ``utf8``\u000a* **readGzipFile(path, options, callback)** - Read a compressed file at ``path``, decompressing it, and passing the resulting buffer to ``callback`` with an error (if it occured)\u000a* **writeJSON(path, obj, callback)** - Stringify ``obj`` and write it to ``path``\u000a* **readJSON(path, callback)** - Parse the contents of ``path`` and pass results to ``callback`` as an ``object``\u000a* **mkdir(path, callback)** - Similar to bash's ``mkdir -p``, makes any missing parent paths for ``path`` before making ``path``\u000a* **rmdir(path, callback)** - Similar to bash's ``rm -rf path``, removes empty and non-empty directories, while also deleting any of their contents\u000a* **rm(path, callback)** - Similar to bash's ``rm -rf``, removes ``path`` even if it is a directory (empty or non-empty)\u000a* **watchFile(path, options, callback)** - Poor man's database -- watches a file, loading its updated contents into memory when changes occur and persisting changes to the loaded version to disk. Passing ``options.serializer(data, cb)`` and ``options.deserializer(data, cb)`` provides asynchronous methods used to serialize data (when persisting to disk) and deserialize data (when loading from disk). ``callback`` is passed an ``object`` to ``callback`` with the following methods and properties:\u000a    * **watcher** - Underlying ``FS.fileWatcher`` instance\u000a    * **get(callback)** - Passes latest file data to ``callback``. If a disk read is in progress, callback is blocked until read is completed\u000a    * **set(data, callback)** - Sets file data to ``data`` and persists to disk, calling ``callback`` when complete\u000a    * **pset(pStr, value, callback)** - Sets a deep property (``pStr``) of file data to ``value`` and persists all data to disk, calling ``callback`` when complete\u000a* **watchJSON(path, options, callback)** - Uses ``watchFile`` with JSON serializers and deserializers to keep a JSON file actively updated in memory as an ``object``\u000a* **getURL(url, options, callback)** - Saves contents of `url` to a temporary file. Pass `options.dest_path` to specify a destination path. `callback` is passed an `error` and `path` for the newly created file\u000a* **postPath(path, url, options, callback)** - Post the contents of `path` to `url`. Pass `options.method` as `post` or `put` to change request type. Pass `options.form_field` to specify a form field to post file contents to. Pass `options.form_data` to include other form data in the request.\u000a\u000a## License\u000aCopyright (c) 2014 Ben Sack\u000aLicensed under the MIT license.\u000a","readmeFilename":"README.md","gitHead":"96b057597461a78cb4b56e39ae9664ba8d433439","_id":"fstk@0.1.7","_shasum":"330f225a0eb890351ebd9a419c9043345b205cc0","_from":".","_npmVersion":"1.4.28","_npmUser":{"name":"sackio","email":"ben@sack.io"},"maintainers":[{"name":"sackio","email":"ben@sack.io"}],"dist":{"shasum":"330f225a0eb890351ebd9a419c9043345b205cc0","tarball":"http://registry.npmjs.org/fstk/-/fstk-0.1.7.tgz"}}: fstk
+42 error     at RegClient.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:308:14)
+42 error     at Request._callback (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:246:65)
+42 error     at Request.self.callback (/usr/lib/node_modules/npm/node_modules/request/request.js:236:22)
+42 error     at Request.emit (events.js:98:17)
+42 error     at Request.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1142:14)
+42 error     at Request.emit (events.js:117:20)
+42 error     at IncomingMessage.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1096:12)
+42 error     at IncomingMessage.emit (events.js:117:20)
+42 error     at _stream_readable.js:943:16
+42 error     at process._tickCallback (node.js:419:13)
+43 error If you need help, you may report this *entire* log,
+43 error including the npm and node versions, at:
+43 error     <http://github.com/npm/npm/issues>
+44 error System Linux 3.13.0-36-generic
+45 error command "/usr/bin/node" "/usr/bin/npm" "publish"
+46 error cwd /mnt/F/Dropbox/code/fstk
+47 error node -v v0.10.32
+48 error npm -v 1.4.28
+49 verbose exit [ 1, true ]
