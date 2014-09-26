@@ -719,7 +719,7 @@ exports['fstk'] = {
         }
         return cb();
       }
-    , function(cb){
+    /*, function(cb){
         return FSTK.getURL('http://nytimes.com', Belt.cs(cb, globals, 'path', 1, 0));
       }
     , function(cb){
@@ -734,7 +734,7 @@ exports['fstk'] = {
     , function(cb){
         test.ok(FS.existsSync(globals.path));
         return cb();
-      }
+      }*/
     ], function(err){
       if (err) console.error(err);
       test.ok(!err);
