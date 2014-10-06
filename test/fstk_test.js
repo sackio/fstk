@@ -735,6 +735,46 @@ exports['fstk'] = {
         test.ok(FS.existsSync(globals.path));
         return cb();
       }*/
+    , function(cb){
+        globals.path = FSTK.tempfile();
+        FS.writeFileSync(globals.path, 'This is a test file');
+        globals.new_path = FSTK.tempfile();
+        test.ok(FS.existsSync(globals.path));
+        test.ok(!FS.existsSync(globals.new_path));
+
+        return FSTK.mv(globals.path, globals.new_path, Belt.cw(cb, 0));
+      }
+    , function(cb){
+        test.ok(!FS.existsSync(globals.path));
+        test.ok(FS.existsSync(globals.new_path));
+        return cb();
+      }
+    , function(cb){
+        globals.path = FSTK.tempfile();
+        globals.sub_path = Path.join(globals.path, '/asubpath.txt');
+        globals.sub_path2 = Path.join(globals.path, '/subpath2');
+        globals.sub_path3 = Path.join(globals.sub_path2, '/nested.txt');
+        FS.mkdirSync(globals.path);
+        FS.mkdirSync(globals.sub_path2);
+        FS.writeFileSync(globals.sub_path, 'This is a test file');
+        FS.writeFileSync(globals.sub_path3, 'This is a test file');
+        globals.new_path = FSTK.tempfile();
+        test.ok(FS.existsSync(globals.path));
+        test.ok(FS.existsSync(globals.sub_path));
+        test.ok(FS.existsSync(globals.sub_path2));
+        test.ok(FS.existsSync(globals.sub_path3));
+        test.ok(!FS.existsSync(globals.new_path));
+
+        return FSTK.mv(globals.path, globals.new_path, Belt.cw(cb, 0));
+      }
+    , function(cb){
+        test.ok(!FS.existsSync(globals.path));
+        test.ok(!FS.existsSync(globals.sub_path));
+        test.ok(!FS.existsSync(globals.sub_path2));
+        test.ok(!FS.existsSync(globals.sub_path3));
+        test.ok(FS.existsSync(globals.new_path));
+        return cb();
+      }
     ], function(err){
       if (err) console.error(err);
       test.ok(!err);
