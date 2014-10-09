@@ -407,10 +407,29 @@ exports['fstk'] = {
         test.ok(Belt.deepEqual(globals.json, globals.body));
         return cb();
       }
+    , function(cb){
+        return FSTK.updateJSON(globals.path, 'this.is', 'updated', Belt.cw(cb, 0));
+      }
+    , function(cb){
+        return FSTK.readJSON(globals.path, Belt.cs(cb, globals, 'body', 1, 0)); 
+      }
+    , function(cb){
+        test.ok(globals.body.this.is === 'updated');
+        return cb();
+      }
+    , function(cb){
+        return FSTK.updateJSON(globals.path, function(){ this.this = 'updated_again'; return; }, Belt.cw(cb, 0));
+      }
+    , function(cb){
+        return FSTK.readJSON(globals.path, Belt.cs(cb, globals, 'body', 1, 0)); 
+      }
+    , function(cb){
+        test.ok(globals.body.this === 'updated_again');
+        return cb();
+      }
     ], function(err){
       if (err) console.error(err);
       test.ok(!err);
-
       test.done();
     });
   },
@@ -719,7 +738,7 @@ exports['fstk'] = {
         }
         return cb();
       }
-    /*, function(cb){
+    , function(cb){
         return FSTK.getURL('http://nytimes.com', Belt.cs(cb, globals, 'path', 1, 0));
       }
     , function(cb){
@@ -734,7 +753,7 @@ exports['fstk'] = {
     , function(cb){
         test.ok(FS.existsSync(globals.path));
         return cb();
-      }*/
+      }
     , function(cb){
         globals.path = FSTK.tempfile();
         FS.writeFileSync(globals.path, 'This is a test file');

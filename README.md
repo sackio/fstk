@@ -31,6 +31,7 @@ All methods accept optional options object and callback as last two arguments (o
 * **readGzipFile(path, options, callback)** - Read a compressed file at ``path``, decompressing it, and passing the resulting buffer to ``callback`` with an error (if it occured)
 * **writeJSON(path, obj, callback)** - Stringify ``obj`` and write it to ``path``
 * **readJSON(path, callback)** - Parse the contents of ``path`` and pass results to ``callback`` as an ``object``
+* **updateJSON(path, update, [value], callback)** - Update the contents of JSON at ``path``, setting property ``update`` to ``value``, or calling ``update`` with JSON set as ``this``
 * **mkdir(path, callback)** - Similar to bash's ``mkdir -p``, makes any missing parent paths for ``path`` before making ``path``
 * **rmdir(path, callback)** - Similar to bash's ``rm -rf path``, removes empty and non-empty directories, while also deleting any of their contents
 * **rm(path, callback)** - Similar to bash's ``rm -rf``, removes ``path`` even if it is a directory (empty or non-empty)
@@ -39,7 +40,9 @@ All methods accept optional options object and callback as last two arguments (o
     * **get(callback)** - Passes latest file data to ``callback``. If a disk read is in progress, callback is blocked until read is completed
     * **set(data, callback)** - Sets file data to ``data`` and persists to disk, calling ``callback`` when complete
     * **pset(pStr, value, callback)** - Sets a deep property (``pStr``) of file data to ``value`` and persists all data to disk, calling ``callback`` when complete
+* **watchDirectory(path, options, callback)** - watch a directory of files, passing to callback an object including `files`, an object of watched files
 * **watchJSON(path, options, callback)** - Uses ``watchFile`` with JSON serializers and deserializers to keep a JSON file actively updated in memory as an ``object``
+* **watchDirectoryJSON(path, options, callback)** - watch a directory of JSON files, passing to callback an object including `files`, an object of watched JSON files
 * **getURL(url, options, callback)** - Saves contents of `url` to a temporary file. Pass `options.dest_path` to specify a destination path. `callback` is passed an `error` and `path` for the newly created file
 * **postPath(path, url, options, callback)** - Post the contents of `path` to `url`. Pass `options.method` as `post` or `put` to change request type. Pass `options.form_field` to specify a form field to post file contents to. Pass `options.form_data` to include other form data in the request.
 
