@@ -801,4 +801,28 @@ exports['fstk'] = {
       test.done();
     });
   }
+, 'safePath': function(test){
+    var test_name = 'safePath';
+
+    //log.debug(test_name);
+    //log.profile(test_name);
+
+    //Yessir.test = test;
+
+    test.ok(FSTK.safePath('/') === false);
+    test.ok(FSTK.safePath('/etc') === false);
+    test.ok(FSTK.safePath('/some.json') === false);
+    test.ok(FSTK.safePath('./'), Path.resolve('./'));
+    test.ok(FSTK.safePath('.'), Path.resolve('.'));
+    test.ok(FSTK.safePath('..'), Path.resolve('..'));
+    test.ok(FSTK.safePath('') === false);
+    test.ok(FSTK.safePath() === false);
+    test.ok(FSTK.safePath(false) === false);
+    test.ok(FSTK.safePath(null) === false);
+    test.ok(FSTK.safePath('etc'));
+    test.ok(FSTK.safePath('/etc/file'));
+
+    //log.profile(test_name);
+    return test.done();
+  }
 };
