@@ -22,49 +22,77 @@ var spin = new Spinner(2);
 spin.start();
 
 var store = {
-  'files': []
-, 'errors': []
-, 'symlinks': []
-, 'nonfiles': []
-, 'checksums': []
+  'files': {}
+, 'dirs': {}
 };
 
-var cur = {}
-  , prev = {}
-
 var check = setInterval(function(){
-  prev = cur;
-  cur = {
-    'files': Belt.get(store.files, 'length')
-  , 'checksums': Belt.get(store.checksums, 'length')
-  , 'symlinks': Belt.get(store.symlinks, 'length')
-  , 'nonfiles': Belt.get(store.nonfiles, 'length')
-  , 'errors': Belt.get(store.errors, 'length')
-  };
-  log.info(Belt.stringify(cur));
-}, 2000);
+  log.info(Belt.stringify({
+    'files': _.size(store.files)
+  , 'dirs': _.size(store.dirs)
+  , 'pending_cs': FSTK.ulimitQueue.length()
+  , 'pending_fs': FSTK.mtimeQueue.length()
+  }));
 
-var perf = setInterval(function(){
-  if (prev) log.warn(Belt.stringify(_.object(_.keys(prev)
-  , _.map(prev, function(v, k){
-    return (cur[k] || 0) - (v || 0);
-  }))));
-}, 20000);
+  FSTK.ulimitQueue.concurrency = Math.min(Math.ceil(FSTK.ulimitQueue.length() / 1000), 800) + 3;
+  FSTK.mtimeQueue.concurrency = Math.min(Math.ceil(FSTK.mtimeQueue.length() / 1000), 200) + 3;
+
+  store = {
+    'files': {}
+  , 'dirs': {}
+  };
+
+}, 3000);
 
 Async.waterfall([
   function(cb){
-    log.profile('fastWalk');
-    return FSTK.fastWalk('/mnt/F/Dropbox', store, function(err){
-      log.profile('fastWalk');
+    log.profile('fastWalk - dirs');
+    log.profile('fastWalk - files');
+    return FSTK.fastWalk('/mnt/F/Dropbox/archive', store, function(err){
+      log.profile('fastWalk - dirs');
+      log.profile('fastWalk - files');
+      return cb(err);
+    });
+  }
+/*, function(cb){
+    FSTK.ulimitQueue.empty = function(){
+      log.profile('fastWalk - files');
+      return cb();
+    };
+  }*/
+, function(cb){
+    log.profile('fastWalk - dirs');
+    log.profile('fastWalk - files');
+    return FSTK.fastWalk('/mnt/F/Dropbox/code', store, function(err){
+      log.profile('fastWalk - dirs');
+      log.profile('fastWalk - files');
+      return cb(err);
+    });
+  }
+/*, function(cb){
+    FSTK.ulimitQueue.empty = function(){
+      log.profile('fastWalk - files');
+
+      return cb();
+    };
+  }*/
+, function(cb){
+    log.profile('fastWalk - dirs');
+    log.profile('fastWalk - files');
+    return FSTK.fastWalk('/mnt/F/Dropbox/git', store, function(err){
+      log.profile('fastWalk - dirs');
+      log.profile('fastWalk - files');
       return cb(err);
     });
   }
 , function(cb){
-    clearInterval(check);
-    clearInterval(perf);
-    return cb();
+    FSTK.ulimitQueue.empty = function(){
+      log.profile('fastWalk - files');
+      return cb();
+    };
   }
 ], function(err){
+  clearInterval(check);
   spin.stop();
   if (err) console.log(err);
   process.exit();
